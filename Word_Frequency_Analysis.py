@@ -1,6 +1,6 @@
 import re
 import operator
-# Export the plain text of teh book from: http://www.gutenberg.org/cache/epub/22764/pg22764.txt
+# Export the plain text of the book from: http://www.gutenberg.org/cache/epub/22764/pg22764.txt
 
 # Open txt file and storing it in a list variable
 text_lines = []
