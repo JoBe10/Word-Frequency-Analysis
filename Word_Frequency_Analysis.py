@@ -67,7 +67,7 @@ top_30 = []
 for i in range(30):
     top_30.append(list(d.keys())[key_values.index(sorted_values[i])])
 
-print(top_30)
+# print(top_30)
 # As the list shows these words do not give a lot of context as to what the book is about apart from the 12th
 # most used word species
 
@@ -99,7 +99,104 @@ for i in range(30):
     new_top_30.append(list(new_d.keys())[new_key_values.index(new_sorted_values[i])])
 
 print(new_top_30)
-# That look better
+# That looks better
+
+# Let's put the above steps into functions so that we can look at more than single word frequencies
+
+# Create a dictionary function
+def get_dict(text):
+    d = dict()
+    for word in text:
+        if word not in d:
+            d[word] = 1
+        else:
+            d[word] += 1
+    return d
+
+# Create a sorted key value function
+def sort_vals(text):
+    d = get_dict(text)
+    vals = list(d.values())
+    sorted_vals = sorted(vals, reverse=True)
+    return d, vals, sorted_vals
+
+# Create a list of the n most frequently appearing keys
+def top_keys(text, n):
+    d, vals, sorted_vals = sort_vals(text)
+    top_n = []
+    for i in range(n):
+        top_n.append(list(d.keys())[vals.index(sorted_vals[i])])
+    return top_n
+
+# Check to see that the functions work
+# print(top_keys(filtered_book, 30))
+# d, vals, sort = sort_vals(filtered_book)
+# print(sort)
+
+# Now it gets interesting
+# Let's investigate the most common two word combinations from the filtered book
+
+two_word_combo = []
+for i in range(len(filtered_book) - 1):
+    two_word_combo.append(filtered_book[i] + ' ' + filtered_book[i + 1])
+
+# Check out the 30 most frequent two word combinations
+# print(top_keys(two_word_combo, 30))
+
+# Some word combinations seem to be repeating, which may be because they represent the first matching key with a
+# given value. Let's see if this suspicion is true
+di, va, so = sort_vals(two_word_combo)
+# print(so)
+
+# We can see that the sorted values have recurring numbers, such as 83, which means that the matching doesn't work
+# the way it was constructed above.
+# What is needed is a way of matching keys from a dictionary using the key value AND if a value occurs more than once
+# the matching key must be selected and not simply the first one
+
+# Function to create a reverse dictionary:
+def reverse_dict(text):
+    d = get_dict(text)
+    rev_dict = {}
+    for key, value in d.items():
+        rev_dict.setdefault(value, set()).add(key)
+    return rev_dict
+
+# Function to sort keys
+def sort_keys(text):
+    d = reverse_dict(text)
+    keys = list(d.keys())
+    sort = sorted(keys, reverse=True)
+    return d, keys, sort
+
+# Function to get top n values based on sorted keys
+def top_n_vals(text, n):
+    d, keys, sort = sort_keys(text)
+    top_n = []
+    while len(top_n) < n:
+        for i in range(n):
+            vals = list(d[list(sort)[i]])
+            if len(vals) > 1:
+                for j in range(len(vals)):
+                    top_n.append(vals[j])
+            else:
+                top_n.append(vals[0])
+    return top_n
+
+# Print the top 30 two word combinations
+print(top_n_vals(two_word_combo, 30))
+
+# Do the same with three word combinations
+three_word_combo = []
+for i in range(len(filtered_book) - 2):
+    three_word_combo.append(filtered_book[i] + ' ' + filtered_book[i + 1] + ' ' + filtered_book[i + 2])
+
+print(three_word_combo)
+
+
+
+
+
+
 
 
 
