@@ -98,7 +98,7 @@ new_top_30 = []
 for i in range(30):
     new_top_30.append(list(new_d.keys())[new_key_values.index(new_sorted_values[i])])
 
-print(new_top_30)
+# print(new_top_30)
 # That looks better
 
 # Let's put the above steps into functions so that we can look at more than single word frequencies
@@ -173,24 +173,33 @@ def top_n_vals(text, n):
     d, keys, sort = sort_keys(text)
     top_n = []
     while len(top_n) < n:
-        for i in range(n):
-            vals = list(d[list(sort)[i]])
-            if len(vals) > 1:
-                for j in range(len(vals)):
-                    top_n.append(vals[j])
-            else:
-                top_n.append(vals[0])
-    return top_n
-
-# Print the top 30 two word combinations
-print(top_n_vals(two_word_combo, 30))
+        if len(sort) > n:
+            for i in range(n):
+                vals = list(d[list(sort)[i]])
+                if len(vals) > 1:
+                        for j in range(len(vals)):
+                            top_n.append(vals[j])
+                else:
+                    top_n.append(vals[0])
+        else:
+            for i in range(len(sort)):
+                vals = list(d[list(sort)[i]])
+                if len(vals) > 1:
+                    for j in range(len(vals)):
+                        top_n.append(vals[j])
+                else:
+                    top_n.append(vals[0])
+    return top_n[:n]
 
 # Do the same with three word combinations
 three_word_combo = []
 for i in range(len(filtered_book) - 2):
     three_word_combo.append(filtered_book[i] + ' ' + filtered_book[i + 1] + ' ' + filtered_book[i + 2])
 
-print(three_word_combo)
+# Print the top 30 one, two and three word combinations
+print(top_n_vals(filtered_book, 30))
+print(top_n_vals(two_word_combo, 30))
+print(top_n_vals(three_word_combo, 30))
 
 
 
