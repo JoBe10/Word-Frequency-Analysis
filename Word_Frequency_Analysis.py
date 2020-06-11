@@ -201,6 +201,9 @@ print(top_n_vals(filtered_book, 30))
 print(top_n_vals(two_word_combo, 30))
 print(top_n_vals(three_word_combo, 30))
 
+# We can see that looking at the most frequent two or three word combinations can provide a good overview of what
+# a text is about.
+
 
 
 
